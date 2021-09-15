@@ -1,0 +1,27 @@
+{
+  "name": "m0ddixx.github.io",
+  "version": "1.0.0",
+  "description": "My personal portfolio",
+  "main": "index.html",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m0ddixx/m0ddixx.github.io.git"
+  },
+  "keywords": [
+    "blog",
+    "portfolio",
+    "cv"
+  ],
+  "author": "m0ddixx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m0ddixx/m0ddixx.github.io/issues"
+  },
+  "homepage": "https://github.com/m0ddixx/m0ddixx.github.io#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.3.4",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.15"
+  }
+}
