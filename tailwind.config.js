@@ -1,19 +1,9 @@
 module.exports = {
-  purge: ["./src/**/*.html", "./src/**/*.js", "./docs/**/*.html"],
-  darkMode: false, // or 'media' or 'class'
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
+  purge: '{,!(node_modules|_site)/**/}*.{html,md}',
+  darkMode: false,
   theme: {
-    extend: {
-      screens: {
-        xs: "480px",
-      },
-    },
-  },
-  variants: {
     extend: {},
   },
-  plugins: [],
+  variants: {},
+  plugins: [require("@tailwindcss/typography")],
 };

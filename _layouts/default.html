@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}" itemscope itemtype="http://schema.org/WebPage">
+
+  {%- include head.html -%}
+
+  <body class="fixed  w-full flex items-center flex-col h-screen justify-between">
+
+    {%- include header.html -%}
+
+    <main class="page-content mb-auto flex-grow" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

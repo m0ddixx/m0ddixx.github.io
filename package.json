@@ -1,34 +1,20 @@
 {
-  "name": "m0ddixx.github.io",
-  "version": "1.0.0",
-  "description": "My personal portfolio",
-  "main": "index.html",
-  "scripts": {
-    "css-prod": "NODE_ENV=production postcss src/css/styles.css -o docs/css/styles.css",
-    "css": "postcss src/css/styles.css -o docs/css/styles.css"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/m0ddixx/m0ddixx.github.io.git"
-  },
-  "keywords": [
-    "blog",
-    "portfolio",
-    "cv"
-  ],
-  "author": "m0ddixx",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/m0ddixx/m0ddixx.github.io/issues"
-  },
-  "homepage": "https://github.com/m0ddixx/m0ddixx.github.io#readme",
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^4.0.3",
+    "@tailwindcss/typography": "^0.4.1",
     "autoprefixer": "^10.3.4",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.3.0",
+    "cssnano": "^5.0.8",
+    "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.3.6",
-    "postcss-cli": "^8.3.1",
-    "tailwindcss": "^2.2.15"
-  },
-  "dependencies": {
-    "postcss-import": "^14.0.2"
+    "postcss-import": "^14.0.2",
+    "postcss-loader": "^6.1.1",
+    "postcss-nested": "^5.0.6",
+    "style-loader": "^3.2.1",
+    "tailwindcss": "^2.2.15",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-manifest-plugin": "^4.0.2"
   }
 }
