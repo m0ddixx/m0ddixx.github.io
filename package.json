@@ -1,14 +1,12 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "@fullhuman/postcss-purgecss": "^4.0.3",
-    "@tailwindcss/typography": "^0.4.1",
     "autoprefixer": "^10.3.4",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.3.0",
     "cssnano": "^5.0.8",
     "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.3.6",
-    "postcss-import": "^14.0.2",
     "postcss-loader": "^6.1.1",
     "postcss-nested": "^5.0.6",
     "style-loader": "^3.2.1",
