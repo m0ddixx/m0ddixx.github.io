@@ -1,6 +1,6 @@
 module.exports = {
   purge: '{,!(node_modules|_site)/**/}*.{html,md}',
-  darkMode: false,
+  darkMode: 'media',
   theme: {
     extend: {},
   },
