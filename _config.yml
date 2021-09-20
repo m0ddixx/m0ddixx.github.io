@@ -8,7 +8,7 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 #
-# If you need help with YAML syntax, here are some quick references for you: 
+# If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 #
@@ -26,7 +26,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://kranz.space" # the base hostname & protocol for your site, e.g. http://example.com
 domain: "kranz.space"
 twitter_username: realm0ddixx
-github_username:  m0ddixx
+github_username: m0ddixx
 safe: true
 
 # Build settings
@@ -44,7 +44,13 @@ plugins:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-exclude:
+sass:
+  load_paths:
+    - _sass
+    - node_modules
+
+include: ["node_modules/tailwindcss"]
+exclude: []
 #  - .sass-cache/
 #  - .jekyll-cache/
 #  - gemfiles/
