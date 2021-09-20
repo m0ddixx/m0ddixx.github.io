@@ -2,4 +2,7 @@
 layout: default
 ---
 
-{{ content }}
+<div class="flex items-center justify-center h-full w-full">{% include me.html %}</div>
+<main class="page-content mb-auto flex-grow" aria-label="Content">
+    <div class="wrapper">{{ content }}</div>
+</main>

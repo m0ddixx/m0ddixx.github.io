@@ -35,6 +35,7 @@ plugins:
   - jekyll-feed
   - jekyll-postcss
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -61,3 +62,23 @@ exclude: []
 #  - vendor/cache/
 #  - vendor/gems/
 #  - vendor/ruby/
+
+twitter:
+  username: realm0ddixx
+  card: summary
+
+social:
+  name: Nico Kranz
+  links:
+    - https://twitter.com/realm0ddixx
+    - https://github.com/m0ddixx
+    - https://www.linkedin.com/in/kranznico
+    - https://instagram.com/realnmk
+    - https://reddit.com/u/m0ddixx
+    - https://steamcommunity.com/id/m0ddixx/
+    - https://t.me/m0ddixx
+
+author:
+  twitter: realm0ddixx
+webmaster_verifications:
+  google: P9byoAjSGsbHnw78CUofbdNpdgdL9gFBpSMiXYXSWYo

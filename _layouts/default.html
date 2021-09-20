@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}" itemscope itemtype="http://schema.org/WebPage">
+<html lang="{{ page.lang | default: site.lang | default: "en" }}" itemscope itemtype="http://schema.org/WebPage" class="dark:text-white dark:bg-gray-800">
 
-  {%- include head.html -%}
+  {% include head.html %}
 
-  <body class="fixed  w-full flex items-center flex-col h-screen justify-between">
+  <body class="fixed antialiased w-full flex items-center flex-col h-screen justify-between">
+  {% include navbar.html %}
+    {{content}}
 
-    {%- include header.html -%}
-
-    <main class="page-content mb-auto flex-grow" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </main>
-
-    {%- include footer.html -%}
+    {% include footer.html %}
 
   </body>
 
