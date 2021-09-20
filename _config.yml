@@ -30,7 +30,7 @@ github_username: m0ddixx
 safe: true
 
 # Build settings
-theme: minima
+theme:
 plugins:
   - jekyll-feed
   - jekyll-postcss
