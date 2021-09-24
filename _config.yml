@@ -59,7 +59,7 @@ sass:
     - node_modules
 
 include: ["node_modules/tailwindcss"]
-exclude: ["*.config.js", "*.json", "*.md"]
+exclude: ["*.config.js", "*.json", "README.md"]
 #  - .sass-cache/
 #  - .jekyll-cache/
 #  - gemfiles/
