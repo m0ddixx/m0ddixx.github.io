@@ -44,6 +44,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-cachebust
+  - jekyll-purgecss
 
 # Exclude from processing.
 # The following items will not be processed, by default.
