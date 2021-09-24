@@ -28,7 +28,14 @@ domain: "kranz.space"
 twitter_username: realm0ddixx
 github_username: m0ddixx
 safe: true
+#Others
+markdown: kramdown
 
+# Syntax highlighting
+highlighter: rouge
+kramdown:
+    input: GFM 
+    syntax_highlighter: rouge
 # Build settings
 theme:
 plugins:
@@ -36,6 +43,7 @@ plugins:
   - jekyll-postcss
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-cachebust
 
 # Exclude from processing.
 # The following items will not be processed, by default.
