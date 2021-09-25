@@ -5,7 +5,7 @@ title: "Hello World!"
 
 # Hello World
 
-Hello
+Hello 👋🏻
 
 {% highlight ruby linenos %}
 def foo
