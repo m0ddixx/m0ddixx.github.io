@@ -62,10 +62,10 @@
         </div>
     </nav>
 </header>
-  <div class="flex-grow">
-    <main class="grid lg:grid-cols-3 grid-flow-col gap-4 my-10">
-    <div class=""></div>
-    <article class="prose xl:prose-xl dark:prose-dark">
+  <div class="flex-grow flex-col py-10 max-w-screen">
+    <main class="grid grid-cols-1 md:grid-cols-3 grid-flow-col gap-4 my-10">
+    <div class="hidden md:block"></div>
+    <article class="prose px-5 md:px-0 xl:prose-xl dark:prose-dark">
         <h1 id="hello-world">Hello World</h1>
 
 <p>Hello 👋🏻</p>
@@ -85,6 +85,212 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">urllib2</span>
 <span class="p">[...]</span>
 </code></pre></div></div>
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">Serato.Net.Structs</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Buffers</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Buffers.Binary</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.IO</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Reflection.Emit</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Runtime.InteropServices</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Serato.Net.Util</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.Extensions.Logging</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Serato.Net.Services</span>
+<span class="p">{</span>
+<span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">SessionFileParser</span> <span class="p">:</span> <span class="n">IDisposable</span><span class="p">,</span> <span class="n">IAsyncDisposable</span>
+<span class="p">{</span>
+<span class="k">public</span> <span class="k">event</span> <span class="n">FinishedParsingTracksEventHandler</span><span class="p">?</span> <span class="n">FinishedParsingTracks</span><span class="p">;</span>
+<span class="k">private</span> <span class="k">readonly</span> <span class="n">Mutex</span> <span class="n">_mut</span><span class="p">;</span>
+<span class="k">private</span> <span class="n">FileStream</span><span class="p">?</span> <span class="n">_stream</span><span class="p">;</span>
+<span class="k">private</span> <span class="n">BinaryReader</span><span class="p">?</span> <span class="n">_reader</span><span class="p">;</span>
+<span class="k">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">AdatStruct</span><span class="p">&gt;</span> <span class="n">_adatList</span><span class="p">;</span>
+
+        <span class="k">private</span> <span class="k">readonly</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">FieldPropertiesAttribute</span><span class="p">&gt;</span> <span class="n">_attributes</span> <span class="p">=</span>
+            <span class="p">(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">FieldPropertiesAttribute</span><span class="p">&gt;)</span><span class="k">typeof</span><span class="p">(</span><span class="n">TrackInfo</span><span class="p">).</span><span class="nf">GetCustomAttributes</span><span class="p">(</span>
+                <span class="k">typeof</span><span class="p">(</span><span class="n">FieldPropertiesAttribute</span><span class="p">),</span> <span class="k">false</span><span class="p">);</span>
+
+        <span class="k">private</span> <span class="k">readonly</span> <span class="n">ILogger</span><span class="p">&lt;</span><span class="n">SessionFileParser</span><span class="p">&gt;</span> <span class="n">_logger</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="nf">SessionFileParser</span><span class="p">(</span><span class="n">ILogger</span><span class="p">&lt;</span><span class="n">SessionFileParser</span><span class="p">&gt;</span> <span class="n">logger</span><span class="p">,</span> <span class="n">FileWatcher</span> <span class="n">fileWatcher</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">fileWatcher</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span>
+        <span class="p">{</span>
+
+        <span class="p">}</span>
+        <span class="k">public</span> <span class="nf">SessionFileParser</span><span class="p">(</span><span class="n">ILogger</span><span class="p">&lt;</span><span class="n">SessionFileParser</span><span class="p">&gt;</span> <span class="n">logger</span><span class="p">,</span> <span class="n">FileWatcher</span> <span class="n">fileWatcher</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bindEvents</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_logger</span> <span class="p">=</span> <span class="n">logger</span><span class="p">;</span>
+            <span class="n">_mut</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Mutex</span><span class="p">();</span>
+            <span class="n">_adatList</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">AdatStruct</span><span class="p">&gt;();</span>
+            <span class="nf">Initialize</span><span class="p">(</span><span class="n">fileWatcher</span><span class="p">,</span> <span class="n">bindEvents</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">(</span><span class="n">FileWatcher</span> <span class="n">fileWatcher</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bindEvents</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">bindEvents</span><span class="p">)</span>
+                <span class="n">fileWatcher</span><span class="p">.</span><span class="n">SessionFileChanged</span> <span class="p">+=</span> <span class="k">async</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">await</span> <span class="nf">ParseSessionFile</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">ParseSessionFile</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">FileSystemEventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_mut</span><span class="p">.</span><span class="nf">WaitOne</span><span class="p">();</span>
+            <span class="k">try</span>
+            <span class="p">{</span>
+                <span class="n">_stream</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">OpenRead</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">FullPath</span><span class="p">);</span>
+                <span class="n">_stream</span><span class="p">.</span><span class="n">Position</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+                <span class="n">_reader</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BinaryReader</span><span class="p">(</span><span class="n">_stream</span><span class="p">);</span>
+                <span class="k">await</span> <span class="nf">ParseFile</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">tracks</span> <span class="p">=</span> <span class="nf">ProcessTrackInfo</span><span class="p">();</span>
+                <span class="k">await</span> <span class="nf">OnFinishedParsingTracks</span><span class="p">(</span><span class="k">new</span> <span class="nf">FinishedParsingTracksEventArgs</span><span class="p">(</span><span class="n">tracks</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">Name</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">catch</span> <span class="p">(</span><span class="n">IOException</span> <span class="n">exception</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">_logger</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">LogLevel</span><span class="p">.</span><span class="n">Error</span><span class="p">,</span> <span class="n">exception</span><span class="p">.</span><span class="nf">ToString</span><span class="p">());</span>
+                <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">exception</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">finally</span>
+            <span class="p">{</span>
+                <span class="n">_adatList</span><span class="p">?.</span><span class="nf">Clear</span><span class="p">();</span>
+                <span class="n">_reader</span><span class="p">?.</span><span class="nf">Close</span><span class="p">();</span>
+                <span class="n">_stream</span><span class="p">?.</span><span class="nf">Close</span><span class="p">();</span>
+                <span class="n">_mut</span><span class="p">.</span><span class="nf">ReleaseMutex</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">ParseFile</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_reader</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidOperationException</span><span class="p">(</span><span class="s">$"</span><span class="p">{</span><span class="k">nameof</span><span class="p">(</span><span class="n">_reader</span><span class="p">)}</span><span class="s"> is null"</span><span class="p">);</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">_reader</span><span class="p">.</span><span class="n">BaseStream</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="n">_reader</span><span class="p">.</span><span class="n">BaseStream</span><span class="p">.</span><span class="n">Position</span> <span class="p">&gt;=</span> <span class="m">8</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">await</span> <span class="nf">ParseHeaderWithChunk</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">ParseHeaderWithChunk</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_reader</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidOperationException</span><span class="p">(</span><span class="s">$"</span><span class="p">{</span><span class="k">nameof</span><span class="p">(</span><span class="n">_reader</span><span class="p">)}</span><span class="s"> is null"</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">header</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ChunkHeader</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="n">Identifier</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="nf">GetString</span><span class="p">(</span><span class="n">_reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="m">4</span><span class="p">)),</span>
+                <span class="n">Length</span> <span class="p">=</span> <span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt32BigEndian</span><span class="p">(</span><span class="n">_reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="m">4</span><span class="p">))</span>
+            <span class="p">};</span>
+            <span class="k">await</span> <span class="nf">ParseChunk</span><span class="p">(</span><span class="n">header</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">ParseChunk</span><span class="p">(</span><span class="n">ChunkHeader</span> <span class="n">header</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Task</span> <span class="n">parserTask</span> <span class="p">=</span> <span class="n">header</span><span class="p">.</span><span class="n">Identifier</span> <span class="k">switch</span>
+            <span class="p">{</span>
+                <span class="s">"vrsn"</span> <span class="p">=&gt;</span> <span class="nf">ParseVrsnChunk</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">Length</span><span class="p">),</span>
+                <span class="s">"oent"</span> <span class="p">=&gt;</span> <span class="nf">ParseHeaderWithChunk</span><span class="p">(),</span>
+                <span class="s">"adat"</span> <span class="p">=&gt;</span> <span class="nf">ParseAdatChunk</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">Length</span><span class="p">),</span>
+                <span class="n">_</span> <span class="p">=&gt;</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">,</span>
+            <span class="p">};</span>
+            <span class="k">await</span> <span class="n">parserTask</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="n">Task</span> <span class="nf">ParseVrsnChunk</span><span class="p">(</span><span class="kt">int</span> <span class="n">length</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="n">Task</span> <span class="nf">ParseAdatChunk</span><span class="p">(</span><span class="kt">int</span> <span class="n">length</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_reader</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidOperationException</span><span class="p">(</span><span class="s">$"</span><span class="p">{</span><span class="k">nameof</span><span class="p">(</span><span class="n">_reader</span><span class="p">)}</span><span class="s"> is null"</span><span class="p">);</span>
+            <span class="n">_adatList</span><span class="p">?.</span><span class="nf">Add</span><span class="p">(</span><span class="k">new</span> <span class="nf">AdatStruct</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="n">Data</span> <span class="p">=</span> <span class="n">_reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+            <span class="p">});</span>
+            <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">async</span> <span class="n">IAsyncEnumerable</span><span class="p">&lt;</span><span class="n">TrackInfo</span><span class="p">&gt;</span> <span class="nf">ProcessTrackInfo</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">adat</span> <span class="k">in</span> <span class="n">_adatList</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">var</span> <span class="n">ti</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">TrackInfo</span><span class="p">();</span>
+                <span class="k">await</span> <span class="k">using</span> <span class="nn">var</span> <span class="n">mem</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">MemoryStream</span><span class="p">(</span><span class="n">adat</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
+                <span class="k">using</span> <span class="nn">var</span> <span class="n">r</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BinaryReader</span><span class="p">(</span><span class="n">mem</span><span class="p">);</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="nf">PeekChar</span><span class="p">()</span> <span class="p">&gt;</span> <span class="p">-</span><span class="m">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="kt">var</span> <span class="n">id</span> <span class="p">=</span> <span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt32BigEndian</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="m">4</span><span class="p">));</span>
+                    <span class="kt">var</span> <span class="n">length</span> <span class="p">=</span> <span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt32BigEndian</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="m">4</span><span class="p">));</span>
+                    <span class="kt">var</span> <span class="n">data</span> <span class="p">=</span> <span class="n">r</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="n">length</span><span class="p">);</span>
+                    <span class="k">await</span> <span class="nf">ParseField</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="k">ref</span> <span class="n">ti</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="n">_logger</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="n">LogLevel</span><span class="p">.</span><span class="n">Information</span><span class="p">,</span> <span class="n">ti</span><span class="p">.</span><span class="nf">ToString</span><span class="p">());</span>
+                <span class="k">yield</span> <span class="k">return</span> <span class="n">ti</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="n">Task</span> <span class="nf">ParseField</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">data</span><span class="p">,</span> <span class="k">ref</span> <span class="n">TrackInfo</span> <span class="n">ti</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">prop</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">TrackInfo</span><span class="p">).</span><span class="nf">GetProperties</span><span class="p">()</span>
+                <span class="p">.</span><span class="nf">FirstOrDefault</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">CustomAttributes</span><span class="p">?.</span><span class="nf">Any</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span>
+                        <span class="n">c</span><span class="p">.</span><span class="n">AttributeType</span> <span class="p">==</span> <span class="k">typeof</span><span class="p">(</span><span class="n">FieldPropertiesAttribute</span><span class="p">)</span> <span class="p">&amp;&amp;</span>
+                        <span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">ConstructorArguments</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Value</span> <span class="k">is</span> <span class="kt">int</span> <span class="n">argId</span> <span class="p">&amp;&amp;</span> <span class="n">argId</span> <span class="p">==</span> <span class="n">id</span><span class="p">)))</span>
+                    <span class="p">.</span><span class="nf">GetValueOrDefault</span><span class="p">());</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">prop</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span> <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
+            <span class="kt">var</span> <span class="n">t</span> <span class="p">=</span> <span class="n">prop</span><span class="p">.</span><span class="n">PropertyType</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="p">==</span> <span class="k">typeof</span><span class="p">(</span><span class="kt">int</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">Length</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">prop</span><span class="p">.</span><span class="nf">SetValue</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">prop</span><span class="p">.</span><span class="nf">SetValue</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt32BigEndian</span><span class="p">(</span><span class="n">data</span><span class="p">));</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="p">==</span> <span class="k">typeof</span><span class="p">(</span><span class="kt">string</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">prop</span><span class="p">.</span><span class="nf">SetValue</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">BigEndianUnicode</span><span class="p">.</span><span class="nf">GetString</span><span class="p">(</span><span class="n">data</span><span class="p">).</span><span class="nf">Replace</span><span class="p">(</span><span class="s">"\0"</span><span class="p">,</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="p">==</span> <span class="k">typeof</span><span class="p">(</span><span class="n">DateTimeOffset</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">prop</span><span class="p">.</span><span class="nf">SetValue</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">DateTimeOffset</span><span class="p">.</span><span class="nf">FromUnixTimeSeconds</span><span class="p">(</span><span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt64BigEndian</span><span class="p">(</span><span class="n">data</span><span class="p">)));</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="p">==</span> <span class="k">typeof</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="n">prop</span><span class="p">.</span><span class="nf">SetValue</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="nf">FromSeconds</span><span class="p">(</span><span class="n">BinaryPrimitives</span><span class="p">.</span><span class="nf">ReadInt64BigEndian</span><span class="p">(</span><span class="n">data</span><span class="p">)));</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">OnFinishedParsingTracks</span><span class="p">(</span><span class="n">FinishedParsingTracksEventArgs</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">FinishedParsingTracks</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">await</span> <span class="nf">FinishedParsingTracks</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">delegate</span> <span class="n">Task</span> <span class="nf">FinishedParsingTracksEventHandler</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">FinishedParsingTracksEventArgs</span> <span class="n">e</span><span class="p">);</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">Dispose</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">_mut</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span>
+            <span class="n">_stream</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+            <span class="n">_reader</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">async</span> <span class="n">ValueTask</span> <span class="nf">DisposeAsync</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_stream</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">_stream</span><span class="p">.</span><span class="nf">DisposeAsync</span><span class="p">();</span>
+            <span class="n">_mut</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span>
+            <span class="n">_reader</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span></code></pre></figure>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam quis enim lobortis scelerisque fermentum dui. Maecenas accumsan lacus vel facilisis volutpat est. Sit amet risus nullam eget felis eget. Nisl purus in mollis nunc sed id semper. Non enim praesent elementum facilisis leo vel fringilla est ullamcorper. Donec ultrices tincidunt arcu non sodales neque sodales. Tristique nulla aliquet enim tortor at auctor urna nunc id. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Leo vel fringilla est ullamcorper eget. Et ultrices neque ornare aenean euismod elementum nisi. Nisl vel pretium lectus quam id leo. Aliquet risus feugiat in ante metus dictum at. Ornare suspendisse sed nisi lacus. Sed arcu non odio euismod lacinia at. Orci nulla pellentesque dignissim enim sit amet. Lorem mollis aliquam ut porttitor leo a diam sollicitudin. Risus ultricies tristique nulla aliquet enim tortor. Dolor sed viverra ipsum nunc aliquet bibendum.</p>
 
