@@ -11,6 +11,9 @@ on:
 jobs:
   jekyll:
     runs-on: ubuntu-latest # can change this to ubuntu-latest if you prefer
+    env:
+      NODE_ENV: production
+      JEKYLL_ENV: production
     steps:
       - uses: actions/checkout@v2
       - name: 📂 setup
