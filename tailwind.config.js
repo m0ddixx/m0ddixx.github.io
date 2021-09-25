@@ -47,6 +47,9 @@ module.exports = {
             figcaption: {
               color: theme("colors.gray.500"),
             },
+            pre: {
+              backgroundColor: theme("colors.gray.900"),
+            },
           },
         },
       }),
