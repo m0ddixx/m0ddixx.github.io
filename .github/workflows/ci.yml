@@ -16,16 +16,19 @@ jobs:
       JEKYLL_ENV: production
     steps:
       - uses: actions/checkout@v2
-      - name: 📂 setup
+        name: 📂 setup
 
         # include the lines below if you are using jekyll-last-modified-at
         # or if you would otherwise need to fetch the full commit history
         # however this may be very slow for large repositories!
         # with:
         # fetch-depth: '0'
-      - name: 📦npm install
-        run: npm install --save-dev
-      
+      - name: 📦 npm install
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install --save-dev
+
       - name: 💎 setup ruby
         uses: ruby/setup-ruby@v1
         with:
