@@ -11,9 +11,6 @@ on:
 jobs:
   jekyll:
     runs-on: ubuntu-latest # can change this to ubuntu-latest if you prefer
-    env:
-      NODE_ENV: production
-      JEKYLL_ENV: production
     steps:
       - uses: actions/checkout@v2
         name: 📂 setup
@@ -23,16 +20,17 @@ jobs:
         # however this may be very slow for large repositories!
         # with:
         # fetch-depth: '0'
-      - name: 📦 npm install
       - uses: actions/setup-node@v2
+        name: 🛠️ node install
         with:
-          node-version: '14'
-      - run: npm install --save-dev
+          node-version: '16'
+      - name: 📦 npm install
+        run: npm install --save-dev
 
       - name: 💎 setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6 # can change this to 2.7 or whatever version you prefer
+          ruby-version: 2.7 # can change this to 2.7 or whatever version you prefer
 
       - name: 🔨 install dependencies & build site
         uses: limjh16/jekyll-action-ts@v2
@@ -72,6 +70,9 @@ jobs:
           custom_opts: '--future'
           ### If you need to specify any Jekyll build options, enable the above input
           ### Flags accepted can be found here https://jekyllrb.com/docs/configuration/options/#build-command-options
+        env:
+          NODE_ENV: production
+          JEKYLL_ENV: production
 
       - name: 🚀 deploy
         uses: peaceiris/actions-gh-pages@v3
