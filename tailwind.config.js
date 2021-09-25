@@ -1,5 +1,5 @@
 module.exports = {
-  purge: [`_site/**/*.html`],
+  purge: [`**/*.html`],
   darkMode: "media",
   theme: {
     extend: {
@@ -46,6 +46,9 @@ module.exports = {
 
             figcaption: {
               color: theme("colors.gray.500"),
+            },
+            pre: {
+              backgroundColor: theme("colors.gray.900"),
             },
           },
         },
