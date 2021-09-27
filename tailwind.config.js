@@ -4,12 +4,19 @@ module.exports = {
   theme: {
     extend: {
       typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            ".highlight": {
+              color: theme("colors.gray.100"),
+            },
+          },
+        },
         dark: {
           css: {
             color: theme("colors.gray.100"),
 
             a: {
-              color: theme("colors.blue.100"),
+              color: theme("colors.white"),
               "&:hover": {
                 color: theme("colors.blue.100"),
               },
