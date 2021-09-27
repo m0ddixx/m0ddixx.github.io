@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang=" en" itemscope itemtype="http://schema.org/WebPage"
+  class="dark:text-white dark:bg-gray-800">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to use UTF-8 encoding in .NET LDAP queries | Nico Kranz</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="How to use UTF-8 encoding in .NET LDAP queries" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How to add UTF-8 support to LDAP queries in .NET 5" />
+<meta property="og:description" content="How to add UTF-8 support to LDAP queries in .NET 5" />
+<link rel="canonical" href="https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html" />
+<meta property="og:url" content="https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html" />
+<meta property="og:site_name" content="Nico Kranz" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How to use UTF-8 encoding in .NET LDAP queries" />
+<meta name="twitter:site" content="@realm0ddixx" />
+<meta name="twitter:creator" content="@realm0ddixx" />
+<meta name="google-site-verification" content="P9byoAjSGsbHnw78CUofbdNpdgdL9gFBpSMiXYXSWYo" />
+<script type="application/ld+json">
+{"description":"How to add UTF-8 support to LDAP queries in .NET 5","url":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html","@type":"BlogPosting","headline":"How to use UTF-8 encoding in .NET LDAP queries","dateModified":"2021-09-27T00:00:00+00:00","datePublished":"2021-09-27T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
+    integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous" />
+  <link rel="stylesheet"
+    href="/assets/css/syntax.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/js/fontawesome.min.js"
+    integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous"></script><link type="application/atom+xml" rel="alternate" href="https://kranz.space/feed.xml" title="Nico Kranz" /></head>
+
+<body class="antialiased flex flex-col h-screen max-w-screen">
+  <header id="top" class="w-full flex flex-col fixed sm:relative bg-white dark:text-white dark:bg-gray-800 pin-t pin-r pin-l z-50">
+    <nav id="site-menu"
+        class="flex flex-col sm:flex-row w-full justify-between items-center px-4 sm:px-6 py-1 bg-white dark:bg-gray-800 shadow sm:shadow-none border-t-4 border-red-900">
+        <div
+            class="w-full sm:w-auto self-start sm:self-center flex flex-row sm:flex-none flex-no-wrap justify-between items-center">
+            <a href="/" class="no-underline py-1">
+                <h1 class="font-bold text-lg tracking-widest">kranz.space</h1>
+            </a>
+            <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button"
+                onclick="navToggle();">
+                <span class="hamburger__top-bun"></span><span class="hamburger__bottom-bun"></span>
+            </button>
+        </div>
+        <div id="menu"
+            class="w-full sm:w-auto self-end sm:self-center sm:flex flex-col sm:flex-row items-center h-full py-1 pb-4 sm:py-0 sm:pb-0 hidden">
+            <a class="text-dark font-bold hover:text-red text-lg w-full no-underline sm:w-auto sm:pr-4 py-2 sm:py-1 sm:pt-2"
+                href="/">
+                <i class="fa fa-home">&nbsp;</i>
+                Home</a>
+            <a class="text-dark font-bold hover:text-red text-lg w-full no-underline sm:w-auto sm:px-4 py-2 sm:py-1 sm:pt-2"
+                href="/blog">
+                <i class="fa fa-newspaper">&nbsp;</i>
+                Blog</a>
+        </div>
+    </nav>
+</header>
+  <main class="flex flex-grow justify-center py-10 mx-5">
+    <article class="w-full
+                prose
+                dark:prose-dark
+                prose-md
+                lg:prose-lg
+                xl:prose-xl
+                2xl:prose-2xl
+                my-10">
+    <h1 id="how-to-use-utf-8-encoding-in-net-ldap-queries">How to use UTF-8 encoding in .NET LDAP queries</h1>
+
+<p>If you are using <code class="language-plaintext csharp highlight highlighter-rouge">System.DirectoryServices.Protocols</code> in .NET to query LDAP directories, you may encounter strange replacement characters like <code class="language-plaintext highlighter-rouge">�</code> in your results containing special characters,
+especially when deploying on Linux environments.</p>
+
+<!--more-->
+
+<p>This is due to the default LDAP protocol version is 2. Microsoft added support for UTF-8 encoded string attributes in LDAP version 3 <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ldap/differences-between-ldap-2-and-ldap-3" target="\_blank">(see here)</a>.</p>
+
+<p>An easy fix to this is setting the protocol version for <code class="language-plaintext csharp highlighter-rouge">LdapConnection</code> to 3 like here:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//omitted for brevity</span>
+<span class="kt">var</span> <span class="n">connection</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LdapConnection</span><span class="p">(</span><span class="n">ldapDirectoryIdentifier</span><span class="p">,</span> <span class="n">credentials</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SessionOptions</span> <span class="p">=</span> <span class="p">{</span> <span class="n">ProtocolVersion</span> <span class="p">=</span> <span class="m">3</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>After that you will get correctly encoded LDAP attributes which contain special latin characters like german umlauts.</p>
+
+<hr />
+
+<p>I hope this little guide helped you. Happy coding 🥳</p>
+
+</article>
+  </main>
+  <footer class="h-auto flex-row flex text-center pb-3 mx-5">
+  <p class="text-gray-600 dark:text-gray-300 text-sm mx-auto">&copy; 2021 kranz.space &middot; <i
+      class="fab fa-creative-commons">&nbsp;</i>This page is open source. <a href="https://github.com/m0ddixx/m0ddixx.github.io/edit/master/_posts/2021-09-27-dotnet-directoryservices-utf8.md"
+      target="_blank">Edit here. <i class="fa fa-external-link-alt"></i></a></p>
+</footer>
+
+
+  <script src="/assets/js/navbar.js" type="text/javascript"></script>
+</body>
+
+</html>
