@@ -44,6 +44,10 @@ kramdown:
       css_class: 'highlight'
       span:
         line_numbers: false
+pagination:
+  enabled: true
+  indexpage: 'blog'
+excerpt_seperator: <!--more-->
 # Build settings
 theme:
 plugins:
@@ -53,6 +57,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-cachebust
   - jekyll-github-metadata
+  - jekyll-paginate-v2
 
 # Exclude from processing.
 # The following items will not be processed, by default.

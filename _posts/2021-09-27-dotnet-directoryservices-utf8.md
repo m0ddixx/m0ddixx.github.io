@@ -14,7 +14,7 @@ especially when deploying on Linux environments.
 
 This is due to the default LDAP protocol version is 2. Microsoft added support for UTF-8 encoded string attributes in LDAP version 3 [(see here)](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ldap/differences-between-ldap-2-and-ldap-3){:target="\_blank"}.
 
-An easy fix to this is setting the protocol version for `LdapConnection`{:.csharp} to 3 like here:
+An easy fix to this is setting the protocol version for `LdapConnection`{:.csharp .highlight} to 3 like here:
 
 ```csharp
 //omitted for brevity
