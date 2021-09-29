@@ -24,7 +24,7 @@
 <meta name="twitter:creator" content="@realm0ddixx" />
 <meta name="google-site-verification" content="P9byoAjSGsbHnw78CUofbdNpdgdL9gFBpSMiXYXSWYo" />
 <script type="application/ld+json">
-{"description":"How to add UTF-8 support to LDAP queries in .NET 5","url":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html","@type":"BlogPosting","headline":"How to use UTF-8 encoding in .NET LDAP queries","dateModified":"2021-09-27T00:00:00+00:00","datePublished":"2021-09-27T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html"},"@context":"https://schema.org"}</script>
+{"headline":"How to use UTF-8 encoding in .NET LDAP queries","dateModified":"2021-09-27T00:00:00+00:00","datePublished":"2021-09-27T00:00:00+00:00","description":"How to add UTF-8 support to LDAP queries in .NET 5","url":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -44,7 +44,7 @@
             <a href="/" class="no-underline py-1">
                 <h1 class="font-bold text-lg tracking-widest">kranz.space</h1>
             </a>
-            <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button"
+            <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none " type="button"
                 onclick="navToggle();">
                 <span class="hamburger__top-bun"></span><span class="hamburger__bottom-bun"></span>
             </button>
@@ -80,7 +80,7 @@ especially when deploying on Linux environments.</p>
 
 <p>This is due to the default LDAP protocol version is 2. Microsoft added support for UTF-8 encoded string attributes in LDAP version 3 <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ldap/differences-between-ldap-2-and-ldap-3" target="\_blank">(see here)</a>.</p>
 
-<p>An easy fix to this is setting the protocol version for <code class="language-plaintext csharp highlighter-rouge">LdapConnection</code> to 3 like here:</p>
+<p>An easy fix to this is setting the protocol version for <code class="language-plaintext csharp highlight highlighter-rouge">LdapConnection</code> to 3 like here:</p>
 
 <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//omitted for brevity</span>
 <span class="kt">var</span> <span class="n">connection</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LdapConnection</span><span class="p">(</span><span class="n">ldapDirectoryIdentifier</span><span class="p">,</span> <span class="n">credentials</span><span class="p">)</span>
