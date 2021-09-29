@@ -19,8 +19,11 @@ group :jekyll_plugins do
   gem 'jekyll-postcss'
   gem 'jekyll-seo-tag'
   gem 'jekyll-sitemap'
+  gem "jekyll-github-metadata"
+  gem "jekyll-paginate-v2"
 end
 
+gem "dotenv"
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
 platforms :mingw, :x64_mingw, :mswin, :jruby do

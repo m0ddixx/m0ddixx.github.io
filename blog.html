@@ -1,0 +1,41 @@
+---
+layout: default
+pagination:
+  enabled: true
+  per_page: 5
+---
+
+<main class="grid auto-cols-auto auto-rows-auto grid-flow-row gap-y-24 my-10">
+  <ul class="prose dark:prose-dark grid grid-flow-row">
+    {% for post in paginator.posts %}
+    <li>
+      <div>
+        <a href="{{ post.url  }}">
+          <h3>{{ post.title }}</h3>
+        </a>
+        <p>
+          {{post.excerpt | strip_html }}...
+          <a class="float-right" href="{{ post.url }}">Read more</a>
+        </p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if paginator.total_pages > 1 %}
+  <ul class="grid grid-cols-3 justify-items-stretch grid-flow-col">
+    {% if paginator.previous_page %}
+    <li>
+      <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}" class="text-lg"><i class="fas fa-chevron-left"></i></a>
+    </li>
+    {% endif %}
+    <div></div>
+    {% if paginator.next_page %}
+    <div></div>
+    <li class="text-right">
+      <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="text-lg"><i class="fas fa-chevron-right"></i></a>
+    </li>
+    {% endif %}
+  </ul>
+  {% endif %}
+</main>
