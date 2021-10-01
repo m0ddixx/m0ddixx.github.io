@@ -8,9 +8,7 @@ tags: dotnet .net5 net5 ldap encoding utf8 latin replace character protocol linu
 # {{page.title}}
 
 If you are using `System.DirectoryServices.Protocols`{:.csharp .highlight} in .NET to query LDAP directories, you may encounter strange replacement characters like `�` in your results containing special characters,
-especially when deploying on Linux environments.
-
-<!--more-->
+especially when deploying on Linux environments.<!--more-->
 
 This is due to the default LDAP protocol version is 2. Microsoft added support for UTF-8 encoded string attributes in LDAP version 3 [(see here)](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ldap/differences-between-ldap-2-and-ldap-3){:target="\_blank"}.
 

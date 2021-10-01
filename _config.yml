@@ -38,16 +38,16 @@ markdown: kramdown
 # Syntax highlighting
 highlighter: rouge
 kramdown:
-    input: GFM 
-    syntax_highlighter: rouge
-    syntax_highlighter_opts:
-      css_class: 'highlight'
-      span:
-        line_numbers: false
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: "highlight"
+    span:
+      line_numbers: false
 pagination:
   enabled: true
-  indexpage: 'blog'
-excerpt_seperator: <!--more-->
+  indexpage: "blog"
+excerpt_separator: "<!--more-->"
 # Build settings
 theme:
 plugins:
