@@ -25,13 +25,14 @@
 {"headline":"Nico Kranz","url":"https://kranz.space/blog.html","description":"Software Engineer and DJ from Dülmen, Germany.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preload" as="style" href="/assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
     integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/assets/css/syntax.css" />
   <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/js/fontawesome.min.js"
-    integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous"></script><link type="application/atom+xml" rel="alternate" href="https://kranz.space/feed.xml" title="Nico Kranz" /><!-- Matomo -->
-  <script>
+    integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous" async></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css" /><link type="application/atom+xml" rel="alternate" href="https://kranz.space/feed.xml" title="Nico Kranz" /><!-- Matomo -->
+  <script async defer>
     var _paq = window._paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(['trackPageView']);
@@ -88,6 +89,9 @@
         </a>
         <p>
           How to use UTF-8 encoding in .NET LDAP queries
+
+If you are using System.DirectoryServices.Protocols in .NET to query LDAP directories, you may encounter strange replacement characters like � in your results containing special characters,
+especially when deploying on Linux environments.
 ...
           <a class="float-right" href="/2021/09/27/dotnet-directoryservices-utf8.html">Read more</a>
         </p>
@@ -102,7 +106,7 @@
   <footer class="h-auto flex-row flex text-center pb-3 mx-5">
   <p class="text-gray-600 dark:text-gray-300 text-sm mx-auto">&copy; 2021 kranz.space &middot; <i
       class="fab fa-creative-commons">&nbsp;</i>This page is open source. <a href="https://github.com/m0ddixx/m0ddixx.github.io/edit/master/blog.html"
-      target="_blank">Edit here. <i class="fa fa-external-link-alt"></i></a></p>
+      target="_blank" rel="noopener noreferrer">Edit here. <i class="fa fa-external-link-alt"></i></a></p>
 </footer>
 
 

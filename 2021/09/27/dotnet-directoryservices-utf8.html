@@ -27,13 +27,14 @@
 {"headline":"How to use UTF-8 encoding in .NET LDAP queries","dateModified":"2021-09-27T00:00:00+00:00","datePublished":"2021-09-27T00:00:00+00:00","url":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html","description":"How to add UTF-8 support to LDAP queries in .NET 5","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kranz.space/2021/09/27/dotnet-directoryservices-utf8.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preload" as="style" href="/assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
     integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/assets/css/syntax.css" />
   <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/js/fontawesome.min.js"
-    integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous"></script><link type="application/atom+xml" rel="alternate" href="https://kranz.space/feed.xml" title="Nico Kranz" /><!-- Matomo -->
-  <script>
+    integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous" async></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css" /><link type="application/atom+xml" rel="alternate" href="https://kranz.space/feed.xml" title="Nico Kranz" /><!-- Matomo -->
+  <script async defer>
     var _paq = window._paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(['trackPageView']);
@@ -91,9 +92,7 @@
     <h1 id="how-to-use-utf-8-encoding-in-net-ldap-queries">How to use UTF-8 encoding in .NET LDAP queries</h1>
 
 <p>If you are using <code class="language-plaintext csharp highlight highlighter-rouge">System.DirectoryServices.Protocols</code> in .NET to query LDAP directories, you may encounter strange replacement characters like <code class="language-plaintext highlighter-rouge">�</code> in your results containing special characters,
-especially when deploying on Linux environments.</p>
-
-<!--more-->
+especially when deploying on Linux environments.<!--more--></p>
 
 <p>This is due to the default LDAP protocol version is 2. Microsoft added support for UTF-8 encoded string attributes in LDAP version 3 <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ldap/differences-between-ldap-2-and-ldap-3" target="\_blank">(see here)</a>.</p>
 
@@ -117,7 +116,7 @@ especially when deploying on Linux environments.</p>
   <footer class="h-auto flex-row flex text-center pb-3 mx-5">
   <p class="text-gray-600 dark:text-gray-300 text-sm mx-auto">&copy; 2021 kranz.space &middot; <i
       class="fab fa-creative-commons">&nbsp;</i>This page is open source. <a href="https://github.com/m0ddixx/m0ddixx.github.io/edit/master/_posts/2021-09-27-dotnet-directoryservices-utf8.md"
-      target="_blank">Edit here. <i class="fa fa-external-link-alt"></i></a></p>
+      target="_blank" rel="noopener noreferrer">Edit here. <i class="fa fa-external-link-alt"></i></a></p>
 </footer>
 
 
