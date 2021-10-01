@@ -6,10 +6,24 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ 'style.css' | bust_css_cache }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
     integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous" />
-  <link rel="stylesheet"
-    href="{{ site.baseurl }}/assets/css/{{ 'syntax.css' | bust_css_cache }}" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ 'syntax.css' | bust_css_cache }}" />
   <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/js/fontawesome.min.js"
     integrity="sha256-1lGQuZh8a4EiccMxEc18J0h4nhr5oCmXEXPzca+Lbrk=" crossorigin="anonymous"></script>
   {%- feed_meta -%} {%- if jekyll.environment == 'production' and
   site.google_analytics -%} {%- include google-analytics.html -%} {%- endif -%}
+  <!-- Matomo -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+      var u = "https://matomo.kranz.space";
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+      g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
 </head>
