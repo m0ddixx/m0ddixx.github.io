@@ -4,7 +4,7 @@
     "autoprefixer": "^10.3.7",
     "ansi-regex": ">=5.0.1",
     "cssnano": "^5.0.9",
-    "postcss": "^8.3.9",
+    "postcss": "^8.4.8",
     "postcss-class-name-shortener": "^1.1.0",
     "postcss-import": "^14.0.2",
     "tailwindcss": "^2.2.17"
