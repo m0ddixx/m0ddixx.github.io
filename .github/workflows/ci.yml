@@ -20,7 +20,7 @@ jobs:
         # however this may be very slow for large repositories!
         # with:
         # fetch-depth: '0'
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3.1.0
         name: 🛠️ node install
         with:
           node-version: '16'
