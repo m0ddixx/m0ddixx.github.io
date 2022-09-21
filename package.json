@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@tailwindcss/typography": "^0.4.1",
-    "autoprefixer": "^10.3.7",
+    "autoprefixer": "^10.4.12",
     "ansi-regex": ">=5.0.1",
     "cssnano": "^5.1.13",
     "postcss": "^8.3.9",
