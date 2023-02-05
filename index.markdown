@@ -5,4 +5,6 @@
 layout: home
 seo:
   type: person
+Hallo Nico:
+  Würde mir etwas mehr Möglichkeiten wünschen hier was durchzuführen
 ---
