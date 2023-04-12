@@ -22,7 +22,7 @@ title: Nico Kranz
 email: nico@kranz.space
 description: >- # this means to ignore newlines until "baseurl:"
   Software Engineer and DJ from Dülmen, Germany.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://kranz.space" # the base hostname & protocol for your site, e.g. http://example.com
 domain: "kranz.space"
 twitter_username: realm0ddixx

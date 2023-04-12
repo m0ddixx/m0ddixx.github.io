@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v2
         name: 🛠️ node install
         with:
-          node-version: '16'
+          node-version: '18'
       - name: 📦 npm install
         run: npm install --save-dev
 
